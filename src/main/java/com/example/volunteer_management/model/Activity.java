@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -25,10 +24,7 @@ public class Activity {
     private Date startTime;
     private Date endTime;
     private Date publishTime;
-    private boolean isDeleted;
-    private boolean isCompleted;
-    private int registerState;
-
-
-
+    private RecordState isDeleted = RecordState.NORMAL;
+    private int isCompleted;
+    private EnrollState enrollState = EnrollState.STARTED;
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Data
@@ -20,5 +20,14 @@ public class Register {
     private int id;
     private int userId;
     private int activityId;
-    private int state;
+    private RegisterState state = RegisterState.PENDING;
+    private String comment;
+    private String feedback;
+
+    @Transient
+    private String activityName;
+    @Transient
+    private Date startTime;
+    @Transient
+    private Date endTime;
 }

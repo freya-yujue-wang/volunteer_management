@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -27,8 +26,7 @@ public class User {
     private String phoneNumber;
     private String address;
     private Date registerDate;
-    private boolean isDeleted;
-    private boolean isManager;
-    private String comment;
+    private RecordState isDeleted = RecordState.NORMAL;
+    private int isManager;
 
 }
