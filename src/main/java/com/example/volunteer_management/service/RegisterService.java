@@ -64,7 +64,7 @@ public class RegisterService {
         registerRepository.save(existingRegister);
     }
 
-    public void updateFeedBack(Register register) throws Exception {
+    public void updateFeedback(Register register) throws Exception {
         Optional<Register> optionalRegister = registerRepository.findById(register.getId());
         if (!optionalRegister.isPresent()) {
             throw new Exception("Register does not exist.");

@@ -27,6 +27,6 @@ public class User {
     private String address;
     private Date registerDate;
     private RecordState isDeleted = RecordState.NORMAL;
-    private int isManager;
+    private int isManager = 0;
 
 }

@@ -25,6 +25,6 @@ public class Activity {
     private Date endTime;
     private Date publishTime;
     private RecordState isDeleted = RecordState.NORMAL;
-    private int isCompleted;
+    private int isCompleted = 0;
     private EnrollState enrollState = EnrollState.STARTED;
 }

@@ -47,7 +47,7 @@ public class ActivityService {
     }
 
     public void updateActivity(Activity activity) throws Exception {
-        Optional<Activity> optionalActivity = activityRepository.findByName(activity.getName());
+        Optional<Activity> optionalActivity = activityRepository.findById(activity.getId());
         if (!optionalActivity.isPresent()) {
             throw new Exception("Activity is not exist.");
         }
