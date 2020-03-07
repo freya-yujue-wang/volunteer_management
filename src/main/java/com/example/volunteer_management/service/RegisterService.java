@@ -2,9 +2,12 @@ package com.example.volunteer_management.service;
 
 import com.example.volunteer_management.dao.ActivityRepository;
 import com.example.volunteer_management.dao.RegisterRepository;
+import com.example.volunteer_management.dao.UserRepository;
 import com.example.volunteer_management.model.Activity;
 import com.example.volunteer_management.model.Register;
+import com.example.volunteer_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +19,15 @@ public class RegisterService {
     private RegisterRepository registerRepository;
     @Autowired
     private ActivityRepository activityRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public void addRegister(Register register) {
-        registerRepository.save(register);
+    public Register addRegister(Register register) {
+        Optional<Register> optionalRegister = registerRepository.findByActivityIdEqualsAndUserIdEquals(register.getActivityId(), register.getUserId());
+        if (optionalRegister.isPresent()) {
+            throw new RuntimeException("Register already exists.");
+        }
+        return registerRepository.save(register);
     }
 
     public void deleteRegister(int id) {
@@ -36,6 +45,20 @@ public class RegisterService {
             register.setActivityName(activity.getName());
             register.setStartTime(activity.getStartTime());
             register.setEndTime(activity.getEndTime());
+        }
+        return registerList;
+    }
+
+    public List<Register> findAllUsersByActivity(int activityId) throws Exception {
+        List<Register> registerList = registerRepository.findAllByActivityIdEquals(activityId);
+        for (Register register : registerList) {
+            Optional<User> userOptional = userRepository.findById(register.getUserId());
+            if (!userOptional.isPresent()) {
+                throw new Exception(String.format("User %d not found!", register.getUserId()));
+            }
+            User user = userOptional.get();
+            register.setName(user.getName());
+            register.setGender(user.getGender());
         }
         return registerList;
     }

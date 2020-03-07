@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -18,12 +19,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(path = "/addUser", produces = "application/json")
-    public HttpStatus addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
-            userService.addUser(user);
-            return HttpStatus.OK;
+            User addedUser = userService.addUser(user);
+            return ResponseEntity.ok(addedUser);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(user);
         }
     }
 
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/deleteUser/{userName}", produces = "application/json")
-    public HttpStatus deleteCourse(@PathVariable("userName") String userName) {
+    public HttpStatus deleteUser(@PathVariable("userName") String userName) {
         try {
             userService.deleteUser(userName);
             return HttpStatus.OK;

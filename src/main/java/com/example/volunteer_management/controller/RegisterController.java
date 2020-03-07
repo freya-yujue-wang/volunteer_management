@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("register")
 public class RegisterController {
@@ -17,12 +18,12 @@ public class RegisterController {
     private RegisterService registerService;
 
     @PostMapping(path = "/addRegister", produces = "application/json")
-    public HttpStatus addRegister(@RequestBody Register register) {
+    public ResponseEntity<Register> addRegister(@RequestBody Register register) {
         try {
-            registerService.addRegister(register);
-            return HttpStatus.OK;
+            Register addedRegister = registerService.addRegister(register);
+            return ResponseEntity.ok(addedRegister);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(register);
         }
     }
 
@@ -39,6 +40,11 @@ public class RegisterController {
     @GetMapping(path = "/getAllRegisterByUser/{userId}", produces = "application/json")
     public HttpEntity<List<Register>> getAllActivities(@PathVariable("userId") int userId) throws Exception {
         return new ResponseEntity<>(registerService.findAllActivitiesByUser(userId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getAllUserByActivity/{activityId}", produces = "application/json")
+    public HttpEntity<List<Register>> getAllUsers(@PathVariable("activityId") int activityId) throws Exception {
+        return new ResponseEntity<>(registerService.findAllUsersByActivity(activityId), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updateState", produces = "application/json")

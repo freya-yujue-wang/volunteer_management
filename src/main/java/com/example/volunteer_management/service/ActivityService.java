@@ -15,10 +15,10 @@ public class ActivityService {
     @Autowired
     private ActivityRepository activityRepository;
 
-    public void addActivity(Activity activity) throws Exception {
+    public Activity addActivity(Activity activity) throws Exception {
         activity.setPublishTime(new Date());
         try {
-            activityRepository.save(activity);
+            return activityRepository.save(activity);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

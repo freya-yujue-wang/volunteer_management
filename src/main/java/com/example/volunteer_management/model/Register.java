@@ -30,4 +30,8 @@ public class Register {
     private Date startTime;
     @Transient
     private Date endTime;
+    @Transient
+    private String name;
+    @Transient
+    private String gender;
 }

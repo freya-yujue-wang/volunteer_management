@@ -16,13 +16,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addUser(User u) throws Exception {
+    public User addUser(User u) throws Exception {
         Optional<User> user = userRepository.findUserByUserName(u.getUserName());
         if (user.isPresent()) {
             throw new Exception("User is existing.");
         }
         u.setRegisterDate(new Date());
-        userRepository.save(u);
+        return userRepository.save(u);
     }
 
     public List<User> findAllUsers() {
