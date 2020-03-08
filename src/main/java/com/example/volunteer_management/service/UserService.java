@@ -30,7 +30,7 @@ public class UserService {
         return users;
     }
 
-    public void deleteUser(String userName) throws Exception {
+    public User deleteUser(String userName) throws Exception {
         Optional<User> optionalUser = userRepository.findUserByUserName(userName);
 
         if (!optionalUser.isPresent()) {
@@ -40,7 +40,7 @@ public class UserService {
         User existingUser = optionalUser.get();
         existingUser.setIsDeleted(RecordState.DELETED);
 
-        userRepository.save(existingUser);
+        return userRepository.save(existingUser);
     }
 
     public void updateUser(User user) throws Exception {

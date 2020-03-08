@@ -28,12 +28,12 @@ public class RegisterController {
     }
 
     @DeleteMapping(path = "/deleteRegister/{id}", produces = "application/json")
-    public HttpStatus deleteCourse(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteCourse(@PathVariable("id") int id) {
         try {
             registerService.deleteRegister(id);
-            return HttpStatus.OK;
+            return ResponseEntity.ok("delete is successful");
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

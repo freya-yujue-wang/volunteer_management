@@ -29,7 +29,16 @@ public class ActivityService {
         return activities;
     }
 
-    public void deleteActivity(int id) throws Exception {
+    public Activity findActivityById(int id) {
+        Optional<Activity> optionalActivity = activityRepository.findById(id);
+        if (!optionalActivity.isPresent()) {
+            throw new RuntimeException("Cannot find activity with id: " + id);
+        }
+        return optionalActivity.get();
+    }
+
+
+    public Activity deleteActivity(int id) throws Exception {
         Optional<Activity> optionalActivity = activityRepository.findById(id);
 
         if (!optionalActivity.isPresent()) {
@@ -40,23 +49,22 @@ public class ActivityService {
         existingActivity.setIsDeleted(RecordState.DELETED);
 
         try {
-            activityRepository.save(existingActivity);
+            return activityRepository.save(existingActivity);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    public void updateActivity(Activity activity) throws Exception {
+    public Activity updateActivity(Activity activity) throws Exception {
         Optional<Activity> optionalActivity = activityRepository.findById(activity.getId());
         if (!optionalActivity.isPresent()) {
             throw new Exception("Activity is not exist.");
         }
 
         Activity existingActivity = optionalActivity.get();
-        activity.setId(existingActivity.getId());
         activity.setPublishTime(existingActivity.getPublishTime());
         try {
-            activityRepository.save(activity);
+            return activityRepository.save(activity);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

@@ -44,12 +44,12 @@ public class UserController {
     }
 
     @PutMapping(path = "/deleteUser/{userName}", produces = "application/json")
-    public HttpStatus deleteUser(@PathVariable("userName") String userName) {
+    public ResponseEntity<User> deleteUser(@PathVariable("userName") String userName) {
         try {
-            userService.deleteUser(userName);
-            return HttpStatus.OK;
+            User deleteUser = userService.deleteUser(userName);
+            return ResponseEntity.ok(deleteUser);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().build();
         }
     }
 

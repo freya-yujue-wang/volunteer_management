@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
@@ -32,28 +33,39 @@ public class ActivityController {
         }
     }
 
+    @GetMapping(path = "/getActivity/{id}", produces = "application/json")
+    public ResponseEntity<Activity> getActivityById(@PathVariable int id) {
+        Activity activity = null;
+        try {
+            activity = activityService.findActivityById(id);
+            return ResponseEntity.ok(activity);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping(path = "/getAllActivities", produces = "application/json")
     public HttpEntity<List<Activity>> getAllActivities() {
         return new ResponseEntity<>(activityService.findAllActivities(), HttpStatus.OK);
     }
 
     @PutMapping(path = "/updateActivity", produces = "application/json")
-    public HttpStatus updateActivity(@RequestBody Activity activity) {
+    public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
         try {
-            activityService.updateActivity(activity);
-            return HttpStatus.OK;
+            Activity updateActivity = activityService.updateActivity(activity);
+            return ResponseEntity.ok(updateActivity);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(activity);
         }
     }
 
     @PutMapping(path = "/deleteActivity/{id}", produces = "application/json")
-    public HttpStatus deleteActivity(@PathVariable("id") int id) {
+    public ResponseEntity<Activity> deleteActivity(@PathVariable("id") int id) {
         try {
-            activityService.deleteActivity(id);
-            return HttpStatus.OK;
+            Activity activity = activityService.deleteActivity(id);
+            return ResponseEntity.ok(activity);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().build();
         }
     }
 }
