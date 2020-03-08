@@ -43,17 +43,38 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
-    public void updateUser(User user) throws Exception {
-        Optional<User> optionalUser = userRepository.findUserByUserName(user.getUserName());
+    public User updateUser(User user) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(user.getId());
         if (!optionalUser.isPresent()) {
             throw new Exception("User is not exist.");
         }
 
         User existingUser = optionalUser.get();
-        user.setId(existingUser.getId());
         user.setRegisterDate(existingUser.getRegisterDate());
 
-        userRepository.save(user);
+        return userRepository.save(user);
+    }
+
+    public User resetPassword(int id) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new Exception("User is not exist.");
+        }
+
+        User existingUser = optionalUser.get();
+        existingUser.setId(existingUser.getId());
+        existingUser.setRegisterDate(existingUser.getRegisterDate());
+        existingUser.setPassword("123456");
+
+        return userRepository.save(existingUser);
+    }
+
+    public User findUserById(int id) {
+        Optional<User> optional = userRepository.findById(id);
+        if (!optional.isPresent()) {
+            throw new RuntimeException("Cannot find user with id: " + id);
+        }
+        return optional.get();
     }
 
 }

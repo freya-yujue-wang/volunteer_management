@@ -48,32 +48,32 @@ public class RegisterController {
     }
 
     @PutMapping(path = "/updateState", produces = "application/json")
-    public HttpStatus updateState(@RequestBody Register register) {
+    public ResponseEntity<Register> updateState(@RequestBody Register register) {
         try {
-            registerService.updateState(register);
-            return HttpStatus.OK;
+            Register updatedRegister = registerService.updateState(register);
+            return ResponseEntity.ok(updatedRegister);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(register);
         }
     }
 
     @PutMapping(path = "/updateComment", produces = "application/json")
-    public HttpStatus updateComment(@RequestBody Register register) {
+    public ResponseEntity<Register> updateComment(@RequestBody Register register) {
         try {
-            registerService.updateComment(register);
-            return HttpStatus.OK;
+            Register updatedRegister = registerService.updateComment(register);
+            return ResponseEntity.ok(updatedRegister);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(register);
         }
     }
 
     @PutMapping(path = "/updateFeedback", produces = "application/json")
-    public HttpStatus updateFeedback(@RequestBody Register register) {
+    public ResponseEntity<Register> updateFeedback(@RequestBody Register register) {
         try {
-            registerService.updateFeedback(register);
-            return HttpStatus.OK;
+            Register updatedRegister = registerService.updateFeedback(register);
+            return ResponseEntity.ok(updatedRegister);
         } catch (Exception e) {
-            return HttpStatus.BAD_REQUEST;
+            return ResponseEntity.badRequest().body(register);
         }
     }
 

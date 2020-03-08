@@ -63,7 +63,7 @@ public class RegisterService {
         return registerList;
     }
 
-    public void updateState(Register register) throws Exception {
+    public Register updateState(Register register) throws Exception {
         Optional<Register> optionalRegister = registerRepository.findById(register.getId());
         if (!optionalRegister.isPresent()) {
             throw new Exception("Register does not exist.");
@@ -72,10 +72,10 @@ public class RegisterService {
         Register existingRegister = optionalRegister.get();
         existingRegister.setState(register.getState());
 
-        registerRepository.save(existingRegister);
+        return registerRepository.save(existingRegister);
     }
 
-    public void updateComment(Register register) throws Exception {
+    public Register updateComment(Register register) throws Exception {
         Optional<Register> optionalRegister = registerRepository.findById(register.getId());
         if (!optionalRegister.isPresent()) {
             throw new Exception("Register does not exist.");
@@ -84,10 +84,10 @@ public class RegisterService {
         Register existingRegister = optionalRegister.get();
         existingRegister.setComment(register.getComment());
 
-        registerRepository.save(existingRegister);
+        return registerRepository.save(existingRegister);
     }
 
-    public void updateFeedback(Register register) throws Exception {
+    public Register updateFeedback(Register register) throws Exception {
         Optional<Register> optionalRegister = registerRepository.findById(register.getId());
         if (!optionalRegister.isPresent()) {
             throw new Exception("Register does not exist.");
@@ -96,7 +96,7 @@ public class RegisterService {
         Register existingRegister = optionalRegister.get();
         existingRegister.setFeedback(register.getFeedback());
 
-        registerRepository.save(existingRegister);
+        return registerRepository.save(existingRegister);
     }
 
 }
