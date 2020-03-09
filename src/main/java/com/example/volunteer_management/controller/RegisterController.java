@@ -27,19 +27,24 @@ public class RegisterController {
         }
     }
 
-    @DeleteMapping(path = "/deleteRegister/{id}", produces = "application/json")
-    public ResponseEntity<String> deleteCourse(@PathVariable("id") int id) {
+    @DeleteMapping(path = "/deleteRegister/{id}")
+    public ResponseEntity<Register> deleteRegister(@PathVariable("id") int id) {
         try {
-            registerService.deleteRegister(id);
-            return ResponseEntity.ok("delete is successful");
+            Register deletedRegister = registerService.deleteRegister(id);
+            return ResponseEntity.ok(deletedRegister);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping(path = "/getAllRegisterByUser/{userId}", produces = "application/json")
     public HttpEntity<List<Register>> getAllActivities(@PathVariable("userId") int userId) throws Exception {
         return new ResponseEntity<>(registerService.findAllActivitiesByUser(userId), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getRegister/{id}", produces = "application/json")
+    public HttpEntity<Register> getRegister(@PathVariable("id") int id) throws Exception {
+        return new ResponseEntity<Register>(registerService.findRegisterByID(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "/getAllUserByActivity/{activityId}", produces = "application/json")

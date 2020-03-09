@@ -1,5 +1,6 @@
 package com.example.volunteer_management.controller;
 
+import com.example.volunteer_management.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import com.example.volunteer_management.model.User;
 import com.example.volunteer_management.service.UserService;
@@ -55,6 +56,16 @@ public class UserController {
         }
     }
 
+    @PutMapping(path = "/updatePassword", produces = "application/json")
+    public ResponseEntity<User> updatePassword(@RequestBody User user) {
+        try {
+            User u = userService.updatePassword(user);
+            return ResponseEntity.ok(u);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(user);
+        }
+    }
+
     @PutMapping(path = "/resetPassword/{id}", produces = "application/json")
     public ResponseEntity<User> resetPassword(@PathVariable("id") int id) {
         try {
@@ -75,9 +86,13 @@ public class UserController {
         }
     }
 
-
-
-
-
-
+    @PostMapping(path = "/login")
+    public ResponseEntity<Response> login(@RequestBody User user) {
+        try {
+            Response loginResponse = userService.login(user.getUserName(), user.getPassword());
+            return ResponseEntity.ok(loginResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

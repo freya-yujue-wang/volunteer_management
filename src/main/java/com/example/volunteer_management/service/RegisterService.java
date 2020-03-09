@@ -7,7 +7,6 @@ import com.example.volunteer_management.model.Activity;
 import com.example.volunteer_management.model.Register;
 import com.example.volunteer_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +29,21 @@ public class RegisterService {
         return registerRepository.save(register);
     }
 
-    public void deleteRegister(int id) {
+    public Register deleteRegister(int id) {
+        Optional<Register> optionalRegister = registerRepository.findById(id);
+        if(!optionalRegister.isPresent()) {
+            throw new RuntimeException("Register does not exist!");
+        }
         registerRepository.deleteById(id);
+        return optionalRegister.get();
+    }
+
+    public Register findRegisterByID(int id) {
+        Optional<Register> optionalRegister = registerRepository.findById(id);
+        if(!optionalRegister.isPresent()) {
+            throw new RuntimeException("Register does not exist!");
+        }
+        return optionalRegister.get();
     }
 
     public List<Register> findAllActivitiesByUser(int userId) throws Exception {

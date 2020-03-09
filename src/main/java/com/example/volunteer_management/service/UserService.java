@@ -2,6 +2,7 @@ package com.example.volunteer_management.service;
 
 import com.example.volunteer_management.dao.UserRepository;
 import com.example.volunteer_management.model.RecordState;
+import com.example.volunteer_management.model.Response;
 import com.example.volunteer_management.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updatePassword(User user) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        if (!optionalUser.isPresent()) {
+            throw new Exception("User is not exist.");
+        }
+
+        User existingUser = optionalUser.get();
+        existingUser.setPassword(user.getPassword());
+
+        return userRepository.save(existingUser);
+    }
+
     public User resetPassword(int id) throws Exception {
         Optional<User> optionalUser = userRepository.findById(id);
         if (!optionalUser.isPresent()) {
@@ -77,4 +90,15 @@ public class UserService {
         return optional.get();
     }
 
+    public Response login(String userName, String password) {
+        Optional<User> user = userRepository.findUserByUserName(userName);
+        if(!user.isPresent()) {
+            return Response.builder().isSuccessful(0).message("用户名不存在！").build();
+        }
+
+        if(!password.equals(user.get().getPassword())) {
+            return Response.builder().isSuccessful(0).message("密码不正确！").build();
+        }
+        return Response.builder().isSuccessful(1).message("登陆成功！").obj(user.get()).build();
+    }
 }
